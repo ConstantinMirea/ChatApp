@@ -29,6 +29,8 @@ public class RestEndpoint {
         allUsers.add(user);
         user = new User("mareen", "mareen");
         allUsers.add(user);
+        user = new User("Zizuc", "zizuc");
+        allUsers.add(user);
     }
 
     @GetMapping(path = "currentUser")
