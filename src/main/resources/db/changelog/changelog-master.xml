@@ -1,23 +1,63 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-   http://www.liquibase.org/xml/ns/dbchangelog
-   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
     <changeSet author="fvasi" id="v0.0.1">
-        <createTable tableName="users">
-            <column name="id" type="number"/>
+        <createTable tableName="chat_users">
+            <column name="id" type="int" />
             <column name="username" type="varchar(255)"/>
             <column name="password" type="varchar(255)"/>
         </createTable>
+        <addNotNullConstraint columnDataType="int"
+                              columnName="id"
+                              constraintName="chat_users_id_nn"
+                              tableName="chat_users"
+                              validate="true"/>
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          tableName="chat_users"/>
+        <addPrimaryKey columnNames="id"
+                       constraintName="pk_chat_users"
+                       tableName="chat_users"/>
+        <addUniqueConstraint columnNames="username"
+                             constraintName="chat_users_uname_uk"
+                             deferrable="true"
+                             tableName="chat_users"
+                             validate="true"
+        />
+
+
         <createTable tableName="messages">
-            <column name="id" type="number"/>
-            <column name="username" type="clob"/>
-            <column name="password" type="varchar(255)"/>
+            <column name="id" type="int"/>
+            <column name="time" type="timestamp"/>
+            <column name="user_id" type="int"/>
+            <column name="content" type="varchar(20000)"/>
         </createTable>
+        <addNotNullConstraint columnDataType="int"
+                              columnName="id"
+                              constraintName="msgs_id_nn"
+                              tableName="messages"
+                              validate="true"/>
+        <addPrimaryKey columnNames="id"
+                       constraintName="pk_messages"
+                       tableName="messages"
+        />
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          generationType="ALWAYS"
+                          incrementBy="1"
+                          tableName="messages"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="messages"
+                                 constraintName="fk_message_user"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="chat_users"
+                                 validate="true"/>
     </changeSet>
 
 </databaseChangeLog>

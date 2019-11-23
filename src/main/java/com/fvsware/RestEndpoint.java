@@ -2,10 +2,13 @@ package com.fvsware;
 
 import com.fvsware.data.Message;
 import com.fvsware.data.User;
+import com.fvsware.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +21,26 @@ public class RestEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestEndpoint.class);
 
-    private List<User> allUsers = new ArrayList<>();
     private List<User> chatroomUsers = new ArrayList<>();
     private List<Message> msges = new ArrayList<>();
 
-    public RestEndpoint() {
-        User user = new User("qosteen", "qosteen");
-        allUsers.add(user);
-        user = new User("floreen", "floreen");
-        allUsers.add(user);
-        user = new User("mareen", "mareen");
-        allUsers.add(user);
-        user = new User("Zizuc", "zizuc");
-        allUsers.add(user);
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostConstruct
+    public void init() {
+        List<User> allUsers = userRepository.findAll();
+        if(allUsers.size() == 0) {
+            User user = new User("qosteen", "qosteen");
+            allUsers.add(user);
+            user = new User("floreen", "floreen");
+            allUsers.add(user);
+            user = new User("mareen", "mareen");
+            allUsers.add(user);
+            user = new User("Zizuc", "zizuc");
+            allUsers.add(user);
+            userRepository.saveAll(allUsers);
+        }
     }
 
     @GetMapping(path = "currentUser")
@@ -43,6 +53,7 @@ public class RestEndpoint {
 
     @PostMapping(path = "login")
     public String login(String username, String password, HttpSession httpSession) {
+        List<User> allUsers = userRepository.findAll();
 
         LOGGER.info("Attempted login {}, {}", username, password);
         for (User user : allUsers) {
@@ -68,6 +79,8 @@ public class RestEndpoint {
         message1.setContent(message);
         msges.add(message1);
         //Aici DB bro
+        //TODO: add MessageRepository to class fields (like user Repository). do messageRepository.save(message). return messageRepository.findAll()
+
         return msges;
 
     }
