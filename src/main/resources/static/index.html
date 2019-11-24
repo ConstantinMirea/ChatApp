@@ -177,7 +177,9 @@ function Getcurrentuser(){
     $.get("api/currentUser")
             .done(function(data) {
                 if (data){
-                    $.get("api/messages").done(populateChat)
+                    setInterval(function() {
+                        $.get("api/messages").done(populateChat)
+                    }, 1000);
                     $.get("api/persons").done(populateChatRoom)
                     $("#loginform").hide();
                     $("#postloginform").show();
