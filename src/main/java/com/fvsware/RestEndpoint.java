@@ -31,11 +31,17 @@ public class RestEndpoint {
     public void init() {
         List<User> allUsers = userRepository.findAll();
         if(allUsers.size() == 0) {
-            User user = new User("qosteen", "qosteen");
+            User user = new User("qosteen_bb8", "qosteen");
             allUsers.add(user);
             user = new User("floreen", "floreen");
             allUsers.add(user);
             user = new User("mareen", "mareen");
+            allUsers.add(user);
+            user = new User("qosteen_darklord", "qosteen");
+            allUsers.add(user);
+            user = new User("qosteen_odin", "qosteen");
+            allUsers.add(user);
+            user = new User("qosteen_M51", "qosteen");
             allUsers.add(user);
             user = new User("Zizuc", "zizuc");
             allUsers.add(user);
