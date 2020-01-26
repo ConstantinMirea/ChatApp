@@ -43,7 +43,7 @@ public class RestEndpoint {
             allUsers.add(user);
             user = new User("qosteen_M51", "qosteen");
             allUsers.add(user);
-            user = new User("Zizuc", "zizuc");
+            user = new User("qosteen_matisse", "qosteen");
             allUsers.add(user);
             userRepository.saveAll(allUsers);
         }
